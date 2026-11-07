@@ -47,6 +47,10 @@ export default function RootLayout() {
           name="subscription/[id]"
           options={{ presentation: "card", headerShown: false }}
         />
+        <Stack.Screen
+          name="subscription/edit/[id]"
+          options={{ presentation: "modal", headerShown: false }}
+        />
       </Stack>
     </GestureHandlerRootView>
   );
