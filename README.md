@@ -1,56 +1,136 @@
-# Welcome to your Expo app 👋
+# Recur
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A minimalist, offline-first subscription tracker for iOS and Android.  
+Track recurring payments, never miss a renewal, and understand where your money goes.
 
-## Get started
+---
 
-1. Install dependencies
+## Features
 
-   ```bash
-   npm install
-   ```
+- **Dashboard** — monthly and yearly totals at a glance
+- **Coming up** — payments due in the next 7 days highlighted with Today / Tomorrow labels
+- **Add & Edit** — name, price, currency (EUR / USD / GBP / MAD), billing cycle, category, colour, notes
+- **Swipe / long-press to delete** — with confirm dialog and haptic feedback
+- **Stats** — animated SVG donut chart of spending by category, top-3 most expensive
+- **Local notifications** — reminder the day before each payment, at a user-chosen time
+- **FR / EN** — full localisation, switches instantly in Settings
+- **Dark mode** — follows system by default, overridable in Settings
+- **100% offline** — SQLite on-device storage, no account, no cloud
 
-2. Start the app
+---
 
-   ```bash
-   npx expo start
-   ```
+## Screenshots
 
-In the output, you'll find options to open the app in a
+> _Add screenshots / GIF here once available_
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+---
 
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Tech stack
 
-## Get a fresh project
+| Layer | Library |
+|---|---|
+| Framework | [Expo SDK 58](https://expo.dev) + [Expo Router v4](https://expo.github.io/router/) |
+| Language | TypeScript (strict) |
+| Styling | [NativeWind v4](https://nativewind.dev) (Tailwind CSS for React Native) |
+| Animations | [Reanimated 4](https://docs.swmansion.com/react-native-reanimated/) |
+| Gestures | react-native-gesture-handler |
+| Charts | react-native-svg (custom animated donut) |
+| Database | expo-sqlite (local, no server) |
+| State | Zustand |
+| i18n | i18next + react-i18next |
+| Notifications | expo-notifications (local only) |
+| Tests | Jest + jest-expo |
 
-When you're ready, run:
+---
 
-```bash
-npm run reset-project
+## Architecture
+
+```
+src/
+├── app/                  # Expo Router screens
+│   ├── (tabs)/           # Home · Stats · Settings tabs
+│   └── subscription/     # new · [id] · edit/[id]
+├── components/           # Shared UI (AmountText, DonutChart, EmptyState, …)
+├── db/                   # SQLite schema, migrations, CRUD queries
+├── store/                # Zustand stores (subscriptions, settings)
+├── lib/                  # Pure business logic
+│   ├── dates.ts          # nextPaymentDate, addMonths (month-end safe), daysUntil
+│   ├── money.ts          # monthlyEquivalent, yearlyEquivalent, formatMoney
+│   └── notifications.ts  # rescheduleAll, permission helpers
+├── i18n/                 # en.json · fr.json
+└── theme/                # Design tokens (colours, spacing, radii)
+__tests__/                # Jest unit tests for src/lib
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+**Key decisions:**
+- Prices stored as **integer cents** to avoid floating-point errors.
+- `nextPaymentDate` is always **computed** from `firstPaymentDate + cycle`, never stored.
+- Month-end handling: `addMonths` clamps to the last day of the target month (Jan 31 + 1 month → Feb 28/29).
+- Notifications re-scheduled after every mutation so they stay accurate.
 
-### Other setup steps
+---
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+## Run locally
 
-## Learn more
+```bash
+# Install dependencies
+npm install
 
-To learn more about developing your project with Expo, look at the following resources:
+# Start the dev server
+npx expo start
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Then scan the QR code with **Expo Go** (iOS App Store / Android Play Store).  
+Your phone and computer must be on the same Wi-Fi network.  
+If the QR scan fails, press `s` in the terminal to switch to tunnel mode.
 
-## Join the community
+---
 
-Join our community of developers creating universal apps.
+## Run tests
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+npm test
+```
+
+---
+
+## Type-check & lint
+
+```bash
+npm run typecheck   # tsc --noEmit
+npm run lint        # eslint src
+```
+
+---
+
+## Build a production APK with EAS
+
+1. Install EAS CLI:
+   ```bash
+   npm install -g eas-cli
+   eas login
+   ```
+
+2. Configure your project (first time only):
+   ```bash
+   eas build:configure
+   ```
+
+3. Build an APK for Android:
+   ```bash
+   eas build --platform android --profile preview
+   ```
+   The `preview` profile produces an `.apk` (sideloadable). Use `production` for a Play Store `.aab`.
+
+4. Build for iOS (requires Apple Developer account):
+   ```bash
+   eas build --platform ios
+   ```
+
+> See [EAS Build docs](https://docs.expo.dev/build/introduction/) for full configuration options.
+
+---
+
+## License
+
+MIT
