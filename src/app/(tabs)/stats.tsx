@@ -25,7 +25,7 @@ export default function StatsScreen() {
   const { mainCurrency, language } = useSettingsStore();
   const locale = language === "fr" ? "fr-FR" : "en-US";
 
-  const sameCurrency = subscriptions.filter((s) => s.currency === mainCurrency);
+  const sameCurrency = subscriptions.filter((s) => s.currency === mainCurrency && s.active);
 
   if (sameCurrency.length === 0) {
     return (
@@ -70,8 +70,8 @@ export default function StatsScreen() {
         <View className="px-4 pt-6 pb-2">
           <Text className="text-white text-2xl font-bold">{t("stats.title")}</Text>
           <Text className="text-neutral-400 text-sm mt-1">
-            {t(subscriptions.length === 1 ? "stats.activeCount" : "stats.activeCount_other", {
-              count: subscriptions.length,
+            {t(sameCurrency.length === 1 ? "stats.activeCount" : "stats.activeCount_other", {
+              count: sameCurrency.length,
             })}
           </Text>
         </View>
