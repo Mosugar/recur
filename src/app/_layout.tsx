@@ -1,20 +1,20 @@
-import '../global.css';
+import "../global.css";
 
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import { Platform, StyleSheet, useColorScheme } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
+import { Platform, StyleSheet, useColorScheme } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 SplashScreen.preventAutoHideAsync();
 
 // Tell NativeWind's web runtime to use class-based dark mode so it doesn't
 // conflict with expo-router's document class management.
 // StyleSheet.setFlag is patched onto StyleSheet by react-native-css-interop.
-if (Platform.OS === 'web') {
+if (Platform.OS === "web") {
   (StyleSheet as unknown as { setFlag: (k: string, v: string) => void }).setFlag(
-    'darkMode',
-    'class',
+    "darkMode",
+    "class",
   );
 }
 
@@ -22,8 +22,8 @@ if (Platform.OS === 'web') {
 function useWebDarkMode() {
   const scheme = useColorScheme();
   useEffect(() => {
-    if (Platform.OS !== 'web' || typeof document === 'undefined') return;
-    document.documentElement.classList.toggle('dark', scheme === 'dark');
+    if (Platform.OS !== "web" || typeof document === "undefined") return;
+    document.documentElement.classList.toggle("dark", scheme === "dark");
   }, [scheme]);
 }
 
@@ -40,11 +40,11 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen
           name="subscription/new"
-          options={{ presentation: 'modal', headerShown: false }}
+          options={{ presentation: "modal", headerShown: false }}
         />
         <Stack.Screen
           name="subscription/[id]"
-          options={{ presentation: 'card', headerShown: false }}
+          options={{ presentation: "card", headerShown: false }}
         />
       </Stack>
     </GestureHandlerRootView>

@@ -1,6 +1,6 @@
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text, View } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Text, View } from "react-native";
+import { useLocalSearchParams } from "expo-router";
 
 export default function SubscriptionDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();

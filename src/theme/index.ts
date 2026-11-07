@@ -5,29 +5,29 @@
  */
 
 export const Colors = {
-  accent: '#6366F1',
-  accentLight: '#818CF8',
-  accentDark: '#4F46E5',
+  accent: "#6366F1",
+  accentLight: "#818CF8",
+  accentDark: "#4F46E5",
 
   // Neutrals
-  white: '#FFFFFF',
-  neutral50: '#F9FAFB',
-  neutral100: '#F3F4F6',
-  neutral200: '#E5E7EB',
-  neutral300: '#D1D5DB',
-  neutral400: '#9CA3AF',
-  neutral500: '#6B7280',
-  neutral600: '#4B5563',
-  neutral700: '#374151',
-  neutral800: '#1F2937',
-  neutral850: '#18212F',
-  neutral900: '#111827',
-  neutral950: '#0D1117',
+  white: "#FFFFFF",
+  neutral50: "#F9FAFB",
+  neutral100: "#F3F4F6",
+  neutral200: "#E5E7EB",
+  neutral300: "#D1D5DB",
+  neutral400: "#9CA3AF",
+  neutral500: "#6B7280",
+  neutral600: "#4B5563",
+  neutral700: "#374151",
+  neutral800: "#1F2937",
+  neutral850: "#18212F",
+  neutral900: "#111827",
+  neutral950: "#0D1117",
 
   // Semantic
-  success: '#10B981',
-  warning: '#F59E0B',
-  danger: '#EF4444',
+  success: "#10B981",
+  warning: "#F59E0B",
+  danger: "#EF4444",
 } as const;
 
 /** Light mode surface/text colours */
@@ -79,16 +79,16 @@ export const FontSize = {
 
 /** Subscription colour palette (predefined choices in Add screen) */
 export const SubscriptionColors = [
-  '#6366F1', // Indigo (accent)
-  '#8B5CF6', // Violet
-  '#EC4899', // Pink
-  '#EF4444', // Red
-  '#F59E0B', // Amber
-  '#10B981', // Emerald
-  '#06B6D4', // Cyan
-  '#3B82F6', // Blue
-  '#14B8A6', // Teal
-  '#F97316', // Orange
+  "#6366F1", // Indigo (accent)
+  "#8B5CF6", // Violet
+  "#EC4899", // Pink
+  "#EF4444", // Red
+  "#F59E0B", // Amber
+  "#10B981", // Emerald
+  "#06B6D4", // Cyan
+  "#3B82F6", // Blue
+  "#14B8A6", // Teal
+  "#F97316", // Orange
 ] as const;
 
 export type SubscriptionColor = (typeof SubscriptionColors)[number];
