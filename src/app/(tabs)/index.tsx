@@ -75,11 +75,17 @@ export default function HomeScreen() {
     return days >= 0 && days <= 7;
   });
 
+  const showUpcoming = upcoming.length > 0 && sortKey === "dueDate";
+  const upcomingIds = showUpcoming ? new Set(upcoming.map((s) => s.id)) : null;
+  const allSubs = upcomingIds ? sorted.filter((s) => !upcomingIds.has(s.id)) : sorted;
+
   const sections: { title: string; data: Subscription[]; paused?: boolean }[] = [];
-  if (upcoming.length > 0 && sortKey === "dueDate") {
+  if (showUpcoming) {
     sections.push({ title: t("home.upcomingTitle"), data: upcoming });
   }
-  sections.push({ title: t("home.allTitle"), data: sorted });
+  if (allSubs.length > 0) {
+    sections.push({ title: t("home.allTitle"), data: allSubs });
+  }
   if (pausedSubs.length > 0) {
     sections.push({ title: t("home.pausedTitle"), data: pausedSubs, paused: true });
   }
