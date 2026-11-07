@@ -5,6 +5,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { Platform, StyleSheet, useColorScheme } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useSubscriptionStore } from "@/store/subscriptionStore";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -26,10 +27,11 @@ function useWebDarkMode() {
 
 export default function RootLayout() {
   useWebDarkMode();
+  const load = useSubscriptionStore((s) => s.load);
 
   useEffect(() => {
-    SplashScreen.hideAsync();
-  }, []);
+    load().finally(() => SplashScreen.hideAsync());
+  }, [load]);
 
   return (
     <GestureHandlerRootView className="flex-1">
