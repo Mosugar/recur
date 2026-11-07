@@ -12,10 +12,7 @@ SplashScreen.preventAutoHideAsync();
 // conflict with expo-router's document class management.
 // StyleSheet.setFlag is patched onto StyleSheet by react-native-css-interop.
 if (Platform.OS === "web") {
-  (StyleSheet as unknown as { setFlag: (k: string, v: string) => void }).setFlag(
-    "darkMode",
-    "class",
-  );
+  (StyleSheet as any).setFlag?.("darkMode", "class");
 }
 
 /** Syncs the system colour scheme → `dark` CSS class on <html> for web. */
