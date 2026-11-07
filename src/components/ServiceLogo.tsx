@@ -24,7 +24,6 @@ function getIcon(siKey: string): { path: string; hex: string } | null {
  */
 export function ServiceLogo({ preset, initial, color, size, borderRadius }: Props) {
   const iconSize = size * 0.58;
-  const emojiSize = size * 0.5;
   const textSize = size * 0.4;
 
   const icon = preset?.siKey ? getIcon(preset.siKey) : null;
@@ -38,8 +37,6 @@ export function ServiceLogo({ preset, initial, color, size, borderRadius }: Prop
         <Svg width={iconSize} height={iconSize} viewBox="0 0 24 24">
           <Path d={icon.path} fill="#ffffff" />
         </Svg>
-      ) : preset ? (
-        <Text style={{ fontSize: emojiSize }}>{preset.emoji}</Text>
       ) : (
         <Text style={{ fontSize: textSize, color: "#fff", fontWeight: "700" }}>
           {initial.charAt(0).toUpperCase()}
