@@ -1,51 +1,48 @@
-import { useState } from "react";
 import { Text, View } from "react-native";
-import { Image } from "expo-image";
-import { logoUrl, type ServicePreset } from "@/lib/servicePresets";
+import Svg, { Path } from "react-native-svg";
+import * as SimpleIcons from "simple-icons";
+import type { ServicePreset } from "@/lib/servicePresets";
 
 interface Props {
-  /** Pass a matched preset to show its real logo; pass null to show the initial fallback. */
   preset: ServicePreset | null | undefined;
-  /** First letter fallback when no preset is matched. */
   initial: string;
-  /** Background color (brand hex or user-picked color). */
   color: string;
   size: number;
   borderRadius: number;
 }
 
+function getIcon(siKey: string): { path: string; hex: string } | null {
+  const icon = (SimpleIcons as Record<string, { path: string; hex: string } | undefined>)[siKey];
+  return icon ?? null;
+}
+
 /**
- * Shows a real company logo fetched from Clearbit.
- * Falls back to the preset's emoji, then to the first-letter initial if the
- * network request fails (offline / unknown domain).
+ * Renders a brand logo tile.
+ * - If the preset has a simple-icons key → crisp offline SVG in brand color on white/dark bg
+ * - If not → emoji centered on the brand color background
+ * - No preset → first-letter initial
  */
 export function ServiceLogo({ preset, initial, color, size, borderRadius }: Props) {
-  const [logoFailed, setLogoFailed] = useState(false);
-
+  const iconSize = size * 0.58;
   const emojiSize = size * 0.5;
   const textSize = size * 0.4;
+
+  const icon = preset?.siKey ? getIcon(preset.siKey) : null;
 
   return (
     <View
       style={{ backgroundColor: color, width: size, height: size, borderRadius }}
       className="items-center justify-center overflow-hidden"
     >
-      {preset && !logoFailed ? (
-        <Image
-          source={{ uri: logoUrl(preset) }}
-          style={{ width: size * 0.72, height: size * 0.72 }}
-          contentFit="contain"
-          onError={() => setLogoFailed(true)}
-          transition={150}
-          cachePolicy="memory-disk"
-        />
+      {icon ? (
+        <Svg width={iconSize} height={iconSize} viewBox="0 0 24 24">
+          <Path d={icon.path} fill="#ffffff" />
+        </Svg>
       ) : preset ? (
-        // Network failed — emoji fallback
         <Text style={{ fontSize: emojiSize }}>{preset.emoji}</Text>
       ) : (
-        // No preset at all — first-letter initial
         <Text style={{ fontSize: textSize, color: "#fff", fontWeight: "700" }}>
-          {initial.toUpperCase()}
+          {initial.charAt(0).toUpperCase()}
         </Text>
       )}
     </View>
