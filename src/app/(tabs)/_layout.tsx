@@ -1,10 +1,13 @@
 import { Tabs } from "expo-router";
-import { Text, useColorScheme, View } from "react-native";
+import { useColorScheme } from "react-native";
+import { useTranslation } from "react-i18next";
 import { Colors, Dark, Light } from "@/theme";
+import { TabIcon } from "@/components/TabIcon";
 
 export default function TabLayout() {
   const scheme = useColorScheme();
   const theme = scheme === "dark" ? Dark : Light;
+  const { t } = useTranslation();
 
   return (
     <Tabs
@@ -17,42 +20,30 @@ export default function TabLayout() {
           borderTopColor: theme.surfaceBorder,
           borderTopWidth: 1,
         },
+        tabBarLabelStyle: { fontSize: 11 },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
-          tabBarIcon: ({ color }) => <TabIcon name="home" color={color ?? theme.textTertiary} />,
+          title: t("tabs.home"),
+          tabBarIcon: ({ color }) => <TabIcon name="home" color={color as string} size={22} />,
         }}
       />
       <Tabs.Screen
         name="stats"
         options={{
-          title: "Stats",
-          tabBarIcon: ({ color }) => <TabIcon name="chart" color={color ?? theme.textTertiary} />,
+          title: t("tabs.stats"),
+          tabBarIcon: ({ color }) => <TabIcon name="stats" color={color as string} size={22} />,
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
-          title: "Settings",
-          tabBarIcon: ({ color }) => (
-            <TabIcon name="settings" color={color ?? theme.textTertiary} />
-          ),
+          title: t("tabs.settings"),
+          tabBarIcon: ({ color }) => <TabIcon name="settings" color={color as string} size={22} />,
         }}
       />
     </Tabs>
-  );
-}
-
-/** Minimal inline icon placeholder — replaced with react-native-svg icons in Step 4 */
-function TabIcon({ name, color }: { name: string; color: string | number | object }) {
-  const size = 22;
-  const shapes: Record<string, string> = { home: "⌂", chart: "◎", settings: "⚙" };
-  return (
-    <View style={{ width: size, height: size, alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ color: color as string, fontSize: 16 }}>{shapes[name]}</Text>
-    </View>
   );
 }
