@@ -13,11 +13,14 @@ interface SettingsState {
   reminderHour: number;
   /** Reminder minute (0–59) */
   reminderMinute: number;
+  /** Monthly spending cap in cents; 0 = no limit */
+  monthlyBudget: number;
   isLoaded: boolean;
   setMainCurrency: (c: Currency) => void;
   setTheme: (t: AppTheme) => void;
   setLanguage: (l: string) => void;
   setReminderTime: (hour: number, minute: number) => void;
+  setMonthlyBudget: (cents: number) => void;
   load: () => Promise<void>;
 }
 
@@ -29,6 +32,7 @@ const defaults = {
   language: detectLanguage(),
   reminderHour: 9,
   reminderMinute: 0,
+  monthlyBudget: 0,
 };
 
 export const useSettingsStore = create<SettingsState>((set, get) => ({
@@ -70,12 +74,17 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
     set({ reminderHour, reminderMinute });
     persist(get());
   },
+
+  setMonthlyBudget: (monthlyBudget) => {
+    set({ monthlyBudget });
+    persist(get());
+  },
 }));
 
 function persist(state: SettingsState) {
-  const { mainCurrency, theme, language, reminderHour, reminderMinute } = state;
+  const { mainCurrency, theme, language, reminderHour, reminderMinute, monthlyBudget } = state;
   AsyncStorage.setItem(
     STORAGE_KEY,
-    JSON.stringify({ mainCurrency, theme, language, reminderHour, reminderMinute }),
+    JSON.stringify({ mainCurrency, theme, language, reminderHour, reminderMinute, monthlyBudget }),
   ).catch(() => {});
 }

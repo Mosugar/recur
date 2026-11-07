@@ -64,6 +64,7 @@ export function SubscriptionForm({ mode, ...rest }: Props | EditProps) {
   const [color, setColor] = useState(existing?.color ?? SubscriptionColors[0]);
   const [notes, setNotes] = useState(existing?.notes ?? "");
   const [reminderEnabled, setReminderEnabled] = useState(existing?.reminderEnabled ?? true);
+  const [active, setActive] = useState(existing?.active ?? true);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -81,7 +82,6 @@ export function SubscriptionForm({ mode, ...rest }: Props | EditProps) {
     setSaving(true);
     try {
       const price = decimalToCents(priceStr);
-      // Ensure dateStr is a valid date
       let firstPaymentDate = dateStr;
       try {
         parseDate(dateStr);
@@ -100,6 +100,7 @@ export function SubscriptionForm({ mode, ...rest }: Props | EditProps) {
           color,
           notes,
           reminderEnabled,
+          active,
         });
       } else {
         await update({
@@ -113,6 +114,7 @@ export function SubscriptionForm({ mode, ...rest }: Props | EditProps) {
           color,
           notes,
           reminderEnabled,
+          active,
         });
       }
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
@@ -263,7 +265,7 @@ export function SubscriptionForm({ mode, ...rest }: Props | EditProps) {
                   key={c}
                   onPress={() => setColor(c)}
                   style={{ backgroundColor: c }}
-                  className={`w-8 h-8 rounded-full items-center justify-center`}
+                  className="w-8 h-8 rounded-full items-center justify-center"
                 >
                   {color === c && <View className="w-3 h-3 rounded-full bg-white opacity-90" />}
                 </Pressable>
@@ -299,6 +301,24 @@ export function SubscriptionForm({ mode, ...rest }: Props | EditProps) {
                   }
                   setReminderEnabled(val);
                 }}
+                trackColor={{ false: "#374151", true: "#6366F1" }}
+                thumbColor="#ffffff"
+              />
+            </View>
+          </FormSection>
+
+          {/* Active toggle */}
+          <FormSection>
+            <View className="flex-row items-center justify-between">
+              <View>
+                <FieldLabel>{t("form.active")}</FieldLabel>
+                {!active && (
+                  <Text className="text-neutral-500 text-xs -mt-1">{t("form.activeHint")}</Text>
+                )}
+              </View>
+              <Switch
+                value={active}
+                onValueChange={setActive}
                 trackColor={{ false: "#374151", true: "#6366F1" }}
                 thumbColor="#ffffff"
               />
@@ -352,9 +372,7 @@ function ChipRow({
           }`}
         >
           <Text
-            className={`${small ? "text-xs" : "text-xs"} font-medium ${
-              selected === item ? "text-white" : "text-neutral-400"
-            }`}
+            className={`text-xs font-medium ${selected === item ? "text-white" : "text-neutral-400"}`}
           >
             {label ? label(item) : item}
           </Text>

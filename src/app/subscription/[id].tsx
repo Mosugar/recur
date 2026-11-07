@@ -17,6 +17,7 @@ export default function SubscriptionDetailScreen() {
   const router = useRouter();
   const subscriptions = useSubscriptionStore((s) => s.subscriptions);
   const remove = useSubscriptionStore((s) => s.remove);
+  const update = useSubscriptionStore((s) => s.update);
   const { language } = useSettingsStore();
   const locale = language === "fr" ? "fr-FR" : "en-US";
 
@@ -30,7 +31,7 @@ export default function SubscriptionDetailScreen() {
     );
   }
 
-  const { name, price, currency, cycle, firstPaymentDate, color } = sub;
+  const { name, price, currency, cycle, firstPaymentDate, color, active } = sub;
   const preset = SERVICE_PRESETS.find((p) => p.name.toLowerCase() === name.toLowerCase());
   const nextDate = nextPaymentDate(firstPaymentDate, cycle);
   const days = daysUntil(nextDate);
@@ -59,6 +60,11 @@ export default function SubscriptionDetailScreen() {
         cursor = addMonths(cursor, 12);
         break;
     }
+  }
+
+  async function togglePause() {
+    await Haptics.selectionAsync();
+    await update({ ...sub!, active: !active });
   }
 
   function confirmDelete() {
@@ -99,23 +105,34 @@ export default function SubscriptionDetailScreen() {
       <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
         {/* Hero */}
         <View className="px-4 pt-8 pb-6 items-center">
-          <View className="mb-4">
+          <View className="mb-4" style={{ opacity: active ? 1 : 0.5 }}>
             <ServiceLogo preset={preset} initial={name} color={color} size={72} borderRadius={20} />
           </View>
           <Text className="text-white text-2xl font-bold">{name}</Text>
           <Text className="text-neutral-400 text-sm mt-1">
             {formatMoney(price, currency, locale)} · {t(`cycles.${cycle}`)}
           </Text>
+          {!active && (
+            <View className="mt-2 bg-neutral-800 px-3 py-1 rounded-full">
+              <Text className="text-neutral-400 text-xs font-semibold uppercase tracking-widest">
+                {t("detail.paused")}
+              </Text>
+            </View>
+          )}
         </View>
 
         {/* Stats grid */}
         <View className="mx-4 rounded-card bg-neutral-900 border border-neutral-800 overflow-hidden">
-          <StatRow
-            label={t("detail.nextPayment")}
-            value={dueLabel ?? nextDateStr}
-            accent={!!dueLabel}
-          />
-          <Divider />
+          {active ? (
+            <>
+              <StatRow
+                label={t("detail.nextPayment")}
+                value={dueLabel ?? nextDateStr}
+                accent={!!dueLabel}
+              />
+              <Divider />
+            </>
+          ) : null}
           <StatRow
             label={t("detail.monthlyEquivalent")}
             value={formatMoney(monthlyCents, currency, locale)}
@@ -142,10 +159,20 @@ export default function SubscriptionDetailScreen() {
           </View>
         ) : null}
 
+        {/* Pause / Resume */}
+        <Pressable
+          onPress={togglePause}
+          className="mx-4 mt-6 rounded-card border border-neutral-700 bg-neutral-900 p-4 items-center active:opacity-70"
+        >
+          <Text className="text-neutral-300 font-semibold">
+            {active ? t("detail.pause") : t("detail.resume")}
+          </Text>
+        </Pressable>
+
         {/* Delete */}
         <Pressable
           onPress={confirmDelete}
-          className="mx-4 mt-6 rounded-card border border-danger/30 bg-danger/10 p-4 items-center active:opacity-70"
+          className="mx-4 mt-3 rounded-card border border-danger/30 bg-danger/10 p-4 items-center active:opacity-70"
         >
           <Text className="text-danger font-semibold">{t("detail.delete")}</Text>
         </Pressable>

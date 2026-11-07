@@ -1,11 +1,13 @@
-import { Alert, Pressable, ScrollView, Text, View } from "react-native";
+import { Alert, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 import * as Haptics from "expo-haptics";
 import Constants from "expo-constants";
 
 import { useSettingsStore, type AppTheme } from "@/store/settingsStore";
 import { useSubscriptionStore } from "@/store/subscriptionStore";
+import { centsToDecimal, decimalToCents } from "@/lib/money";
 import type { Currency } from "@/db/schema";
 
 const CURRENCIES: Currency[] = ["EUR", "USD", "GBP", "MAD"];
@@ -27,15 +29,35 @@ export default function SettingsScreen() {
     reminderHour,
     reminderMinute,
     setReminderTime,
+    monthlyBudget,
+    setMonthlyBudget,
   } = useSettingsStore();
   const removeAll = useSubscriptionStore((s) => s.removeAll);
 
   const appVersion = Constants.expoConfig?.version ?? "—";
 
+  const [budgetStr, setBudgetStr] = useState(
+    monthlyBudget > 0 ? centsToDecimal(monthlyBudget) : "",
+  );
+
   function themeLabel(th: string) {
     if (th === "system") return t("settings.themeSystem");
     if (th === "light") return t("settings.themeLight");
     return t("settings.themeDark");
+  }
+
+  function handleBudgetBlur() {
+    const trimmed = budgetStr.trim();
+    if (!trimmed) {
+      setMonthlyBudget(0);
+      return;
+    }
+    const cents = decimalToCents(trimmed);
+    if (!isNaN(cents) && cents > 0) {
+      setMonthlyBudget(cents);
+    } else {
+      setBudgetStr(monthlyBudget > 0 ? centsToDecimal(monthlyBudget) : "");
+    }
   }
 
   function confirmDeleteAll() {
@@ -53,7 +75,6 @@ export default function SettingsScreen() {
   }
 
   function cycleReminderTime() {
-    // Cycle through common times: 8:00 → 9:00 → 10:00 → 12:00 → 18:00 → 20:00
     const options = [
       [8, 0],
       [9, 0],
@@ -84,6 +105,23 @@ export default function SettingsScreen() {
             selected={mainCurrency}
             onSelect={(v) => setMainCurrency(v as Currency)}
           />
+        </Section>
+
+        {/* Monthly budget */}
+        <Section label={t("settings.monthlyBudget")}>
+          <TextInput
+            value={budgetStr}
+            onChangeText={setBudgetStr}
+            onBlur={handleBudgetBlur}
+            placeholder={t("settings.monthlyBudgetPlaceholder")}
+            placeholderTextColor="#6B7280"
+            keyboardType="decimal-pad"
+            className="text-white text-base py-2"
+            returnKeyType="done"
+          />
+          <Text className="text-neutral-500 text-xs mt-1">
+            {t("settings.monthlyBudgetHint", { currency: mainCurrency })}
+          </Text>
         </Section>
 
         {/* Theme */}
@@ -125,7 +163,7 @@ export default function SettingsScreen() {
           >
             <Text className="text-white font-semibold text-base">{reminderTimeStr}</Text>
           </Pressable>
-          <Text className="text-neutral-500 text-xs mt-2">Tap to cycle through preset times</Text>
+          <Text className="text-neutral-500 text-xs mt-2">{t("settings.reminderTimeHint")}</Text>
         </Section>
 
         {/* Danger zone */}
