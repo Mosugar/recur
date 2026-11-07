@@ -5,6 +5,7 @@ import { nextPaymentDate, daysUntil, dueSoonLabel } from "@/lib/dates";
 import { monthlyEquivalentCents, formatMoney } from "@/lib/money";
 import { useSettingsStore } from "@/store/settingsStore";
 import { SERVICE_PRESETS } from "@/lib/servicePresets";
+import { ServiceLogo } from "./ServiceLogo";
 
 interface Props {
   subscription: Subscription;
@@ -38,15 +39,8 @@ export function SubscriptionRow({ subscription, onPress, onLongPress }: Props) {
       className="flex-row items-center px-4 py-3 active:opacity-70"
     >
       {/* Logo */}
-      <View
-        style={{ backgroundColor: color, width: 44, height: 44, borderRadius: 12 }}
-        className="mr-3 items-center justify-center flex-shrink-0"
-      >
-        {preset ? (
-          <Text style={{ fontSize: 20 }}>{preset.emoji}</Text>
-        ) : (
-          <Text className="text-white font-bold text-base">{name.charAt(0).toUpperCase()}</Text>
-        )}
+      <View className="mr-3 flex-shrink-0">
+        <ServiceLogo preset={preset} initial={name} color={color} size={44} borderRadius={12} />
       </View>
 
       {/* Name + cycle */}

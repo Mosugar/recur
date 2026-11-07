@@ -9,6 +9,7 @@ import { useSettingsStore } from "@/store/settingsStore";
 import { nextPaymentDate, daysUntil, dueSoonLabel, parseDate, addMonths } from "@/lib/dates";
 import { monthlyEquivalentCents, yearlyEquivalentCents, formatMoney } from "@/lib/money";
 import { SERVICE_PRESETS } from "@/lib/servicePresets";
+import { ServiceLogo } from "@/components/ServiceLogo";
 
 export default function SubscriptionDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -98,15 +99,8 @@ export default function SubscriptionDetailScreen() {
       <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
         {/* Hero */}
         <View className="px-4 pt-8 pb-6 items-center">
-          <View
-            style={{ backgroundColor: color, width: 72, height: 72, borderRadius: 20 }}
-            className="mb-4 items-center justify-center"
-          >
-            {preset ? (
-              <Text style={{ fontSize: 32 }}>{preset.emoji}</Text>
-            ) : (
-              <Text className="text-white font-bold text-2xl">{name.charAt(0).toUpperCase()}</Text>
-            )}
+          <View className="mb-4">
+            <ServiceLogo preset={preset} initial={name} color={color} size={72} borderRadius={20} />
           </View>
           <Text className="text-white text-2xl font-bold">{name}</Text>
           <Text className="text-neutral-400 text-sm mt-1">

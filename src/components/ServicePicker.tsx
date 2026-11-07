@@ -1,6 +1,7 @@
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { SERVICE_PRESETS, type ServicePreset } from "@/lib/servicePresets";
+import { ServiceLogo } from "./ServiceLogo";
 
 interface Props {
   onSelect: (preset: ServicePreset) => void;
@@ -26,15 +27,15 @@ export function ServicePicker({ onSelect }: Props) {
             className="items-center active:opacity-70"
             style={{ width: 64 }}
           >
-            {/* Logo circle */}
-            <View
-              style={{ backgroundColor: preset.color }}
-              className="w-12 h-12 rounded-2xl items-center justify-center mb-1.5"
-            >
-              <Text style={{ fontSize: 22 }}>{preset.emoji}</Text>
-            </View>
+            <ServiceLogo
+              preset={preset}
+              initial={preset.name.charAt(0)}
+              color={preset.color}
+              size={48}
+              borderRadius={14}
+            />
             <Text
-              className="text-neutral-400 text-xs text-center"
+              className="text-neutral-400 text-xs text-center mt-1.5"
               numberOfLines={2}
               style={{ lineHeight: 14 }}
             >
