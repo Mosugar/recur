@@ -28,7 +28,9 @@ function useAppTheme() {
   useEffect(() => {
     // Native override
     if (Platform.OS !== "web") {
-      Appearance.setColorScheme(theme === "system" ? "auto" : (theme as "light" | "dark"));
+      Appearance.setColorScheme(
+        theme === "system" ? "auto" : (theme as "light" | "dark"),
+      );
     }
   }, [theme]);
 
