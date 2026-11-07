@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 72">
+  <defs>
+    <linearGradient id="arc" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818CF8"/>
+      <stop offset="100%" stop-color="#6366F1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Icon mark — 36×36, center (22, 36) -->
+  <!-- Arc: 270° clockwise from top to left, center (22,36), r=14, stroke=4 -->
+  <path
+    d="M 22 22 A 14 14 0 1 1 8 36"
+    fill="none"
+    stroke="url(#arc)"
+    stroke-width="4"
+    stroke-linecap="round"
+  />
+  <!-- Arrowhead at (8, 36) pointing downward -->
+  <polygon points="8,40 4,33 12,33" fill="#6366F1"/>
+
+  <!-- "recur" wordmark -->
+  <text
+    x="50"
+    y="48"
+    font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif"
+    font-weight="700"
+    font-size="38"
+    letter-spacing="-1"
+    fill="white"
+  >recur</text>
+</svg>
