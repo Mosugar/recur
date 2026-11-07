@@ -1,136 +1,132 @@
+<div align="center">
+
+<img src="assets/icon.svg" alt="Recur logo" width="140" />
+
 # Recur
 
-A minimalist, offline-first subscription tracker for iOS and Android.  
-Track recurring payments, never miss a renewal, and understand where your money goes.
+**A minimalist subscription tracker for iOS & Android.**
+Know what you pay, when you pay it, and never get surprised by a renewal again.
+
+![Expo](https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white)
+![React Native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+![Tailwind](https://img.shields.io/badge/NativeWind-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+
+<img src="docs/preview.png" alt="Recur screens" width="100%" />
+
+</div>
 
 ---
 
-## Features
+## ✨ Features
 
-- **Dashboard** — monthly and yearly totals at a glance
-- **Coming up** — payments due in the next 7 days highlighted with Today / Tomorrow labels
-- **Add & Edit** — name, price, currency (EUR / USD / GBP / MAD), billing cycle, category, colour, notes
-- **Swipe / long-press to delete** — with confirm dialog and haptic feedback
-- **Stats** — animated SVG donut chart of spending by category, top-3 most expensive
-- **Local notifications** — reminder the day before each payment, at a user-chosen time
-- **FR / EN** — full localisation, switches instantly in Settings
-- **Dark mode** — follows system by default, overridable in Settings
-- **100% offline** — SQLite on-device storage, no account, no cloud
+- **All your subscriptions in one place**: name, price, billing cycle, category, color
+- **Monthly & yearly totals** calculated automatically, whatever the billing cycle
+- **Coming up**: see payments due in the next 7 days at a glance
+- **Reminders**: local notification the day before each payment
+- **Stats**: spending breakdown by category with an animated donut chart
+- **Dark mode**, follows your system by default
+- **French & English**
+- **100% offline & private**: all data stays on your phone, no account, no server
 
----
+## 📱 Screenshots
 
-## Screenshots
+| Home | Add subscription | Stats | Settings |
+|:---:|:---:|:---:|:---:|
+| <img src="docs/home.png" width="200"/> | <img src="docs/add.png" width="200"/> | <img src="docs/stats.png" width="200"/> | <img src="docs/settings.png" width="200"/> |
 
-> _Add screenshots / GIF here once available_
+## 🛠 Tech stack
 
----
-
-## Tech stack
-
-| Layer | Library |
+| Layer | Technology |
 |---|---|
-| Framework | [Expo SDK 58](https://expo.dev) + [Expo Router v4](https://expo.github.io/router/) |
+| Framework | [Expo](https://expo.dev) + React Native |
 | Language | TypeScript (strict) |
-| Styling | [NativeWind v4](https://nativewind.dev) (Tailwind CSS for React Native) |
-| Animations | [Reanimated 4](https://docs.swmansion.com/react-native-reanimated/) |
-| Gestures | react-native-gesture-handler |
-| Charts | react-native-svg (custom animated donut) |
-| Database | expo-sqlite (local, no server) |
+| Navigation | Expo Router (file-based) |
+| Styling | NativeWind (Tailwind CSS) |
+| Animations | Reanimated + Gesture Handler |
+| Storage | expo-sqlite (local database) |
 | State | Zustand |
-| i18n | i18next + react-i18next |
-| Notifications | expo-notifications (local only) |
-| Tests | Jest + jest-expo |
+| Notifications | expo-notifications |
+| Charts | Custom SVG donut (react-native-svg) |
+| i18n | i18next (FR / EN) |
+| Tests | Jest |
 
----
-
-## Architecture
+## 🏗 Architecture
 
 ```
+app/                 # Screens (Expo Router)
+  (tabs)/            # Home, Stats, Settings
+  subscription/      # Add / Details screens
 src/
-├── app/                  # Expo Router screens
-│   ├── (tabs)/           # Home · Stats · Settings tabs
-│   └── subscription/     # new · [id] · edit/[id]
-├── components/           # Shared UI (AmountText, DonutChart, EmptyState, …)
-├── db/                   # SQLite schema, migrations, CRUD queries
-├── store/                # Zustand stores (subscriptions, settings)
-├── lib/                  # Pure business logic
-│   ├── dates.ts          # nextPaymentDate, addMonths (month-end safe), daysUntil
-│   ├── money.ts          # monthlyEquivalent, yearlyEquivalent, formatMoney
-│   └── notifications.ts  # rescheduleAll, permission helpers
-├── i18n/                 # en.json · fr.json
-└── theme/                # Design tokens (colours, spacing, radii)
-__tests__/                # Jest unit tests for src/lib
+  components/        # Reusable UI components
+  db/                # SQLite schema, migrations, queries
+  store/             # Zustand stores
+  lib/               # Pure business logic (dates, money, notifications)
+  i18n/              # Translations
+  theme/             # Design tokens (colors, spacing, typography)
+__tests__/           # Unit tests for business logic
 ```
 
-**Key decisions:**
-- Prices stored as **integer cents** to avoid floating-point errors.
-- `nextPaymentDate` is always **computed** from `firstPaymentDate + cycle`, never stored.
-- Month-end handling: `addMonths` clamps to the last day of the target month (Jan 31 + 1 month → Feb 28/29).
-- Notifications re-scheduled after every mutation so they stay accurate.
+**A few design decisions:**
+- **Prices are stored in cents** (integers) to avoid floating-point errors.
+- **The next payment date is never stored.** It's computed from the first payment date and the billing cycle, so it's always correct.
+- **Month-end edge cases are handled**: a subscription billed on Jan 31 renews on Feb 28/29.
+- **Business logic lives in pure functions** (`src/lib`), separated from the UI and fully unit-tested.
 
----
+## 🚀 Getting started
 
-## Run locally
+**Requirements:** Node.js (LTS) and the [Expo Go](https://expo.dev/go) app on your phone.
 
 ```bash
-# Install dependencies
+git clone https://github.com/Mosugar/recur.git
+cd recur
 npm install
-
-# Start the dev server
 npx expo start
 ```
 
-Then scan the QR code with **Expo Go** (iOS App Store / Android Play Store).  
-Your phone and computer must be on the same Wi-Fi network.  
-If the QR scan fails, press `s` in the terminal to switch to tunnel mode.
+Then scan the QR code with **Expo Go** (Android) or the **Camera app** (iOS).
 
----
-
-## Run tests
+### Run the tests
 
 ```bash
 npm test
 ```
 
----
-
-## Type-check & lint
+### Build an Android APK
 
 ```bash
-npm run typecheck   # tsc --noEmit
-npm run lint        # eslint src
+npm install -g eas-cli
+eas build -p android --profile preview
 ```
 
----
+## 📥 Download
 
-## Build a production APK with EAS
+Android: grab the latest `.apk` from the [Releases](../../releases) page.
 
-1. Install EAS CLI:
-   ```bash
-   npm install -g eas-cli
-   eas login
-   ```
+## 🗺 Roadmap
 
-2. Configure your project (first time only):
-   ```bash
-   eas build:configure
-   ```
+- [ ] Home screen widgets
+- [ ] Export data (CSV)
+- [ ] Cloud backup (iCloud / Google Drive)
+- [ ] Multi-currency totals with exchange rates
 
-3. Build an APK for Android:
-   ```bash
-   eas build --platform android --profile preview
-   ```
-   The `preview` profile produces an `.apk` (sideloadable). Use `production` for a Play Store `.aab`.
+## ⚖️ Disclaimer
 
-4. Build for iOS (requires Apple Developer account):
-   ```bash
-   eas build --platform ios
-   ```
+Brand logos are trademarks of their respective owners and are used only to identify services.
 
-> See [EAS Build docs](https://docs.expo.dev/build/introduction/) for full configuration options.
+## 👤 Author
+
+**Mohamed Sekkar**, Full Stack Developer
+
+- Portfolio: [mohamedsekkar.com](https://mohamedsekkar.com)
+- LinkedIn: [linkedin.com/in/mohamedsekkar](https://linkedin.com/in/mohamedsekkar)
+- Email: sekkarmohamedd@gmail.com
 
 ---
 
-## License
+<div align="center">
 
-MIT
+Made with ☕ and React Native
+
+</div>
