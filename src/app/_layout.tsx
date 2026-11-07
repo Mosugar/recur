@@ -1,4 +1,5 @@
 import "../global.css";
+import "@/i18n"; // initialise i18next before any screen renders
 
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -6,12 +7,12 @@ import { useEffect } from "react";
 import { Platform, StyleSheet, useColorScheme } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSubscriptionStore } from "@/store/subscriptionStore";
+import { useSettingsStore } from "@/store/settingsStore";
 
 SplashScreen.preventAutoHideAsync();
 
 // Tell NativeWind's web runtime to use class-based dark mode so it doesn't
 // conflict with expo-router's document class management.
-// StyleSheet.setFlag is patched onto StyleSheet by react-native-css-interop.
 if (Platform.OS === "web") {
   (StyleSheet as any).setFlag?.("darkMode", "class");
 }
@@ -27,11 +28,12 @@ function useWebDarkMode() {
 
 export default function RootLayout() {
   useWebDarkMode();
-  const load = useSubscriptionStore((s) => s.load);
+  const loadSubs = useSubscriptionStore((s) => s.load);
+  const loadSettings = useSettingsStore((s) => s.load);
 
   useEffect(() => {
-    load().finally(() => SplashScreen.hideAsync());
-  }, [load]);
+    Promise.all([loadSubs(), loadSettings()]).finally(() => SplashScreen.hideAsync());
+  }, [loadSubs, loadSettings]);
 
   return (
     <GestureHandlerRootView className="flex-1">

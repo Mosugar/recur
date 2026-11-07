@@ -1,0 +1,105 @@
+{
+  "tabs": {
+    "home": "Home",
+    "stats": "Stats",
+    "settings": "Settings"
+  },
+  "home": {
+    "perMonth": "/ mo",
+    "perYear": "/ yr",
+    "upcomingTitle": "Coming up",
+    "allTitle": "All subscriptions",
+    "addButton": "Add subscription",
+    "otherCurrenciesNote": "Some subscriptions use other currencies and are excluded from totals.",
+    "deleteConfirmTitle": "Delete subscription",
+    "deleteConfirmMessage": "Are you sure you want to delete \"{{name}}\"?",
+    "deleteConfirm": "Delete",
+    "cancel": "Cancel"
+  },
+  "due": {
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "inDays": "In {{count}} days"
+  },
+  "empty": {
+    "title": "No subscriptions yet",
+    "subtitle": "Track your recurring payments and never miss a renewal.",
+    "cta": "Add your first subscription"
+  },
+  "cycles": {
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "quarterly": "Quarterly",
+    "yearly": "Yearly"
+  },
+  "categories": {
+    "streaming": "Streaming",
+    "music": "Music",
+    "software": "Software",
+    "gaming": "Gaming",
+    "fitness": "Fitness",
+    "cloud": "Cloud",
+    "news": "News",
+    "other": "Other"
+  },
+  "form": {
+    "newTitle": "New subscription",
+    "editTitle": "Edit subscription",
+    "name": "Name",
+    "namePlaceholder": "e.g. Netflix",
+    "price": "Price",
+    "currency": "Currency",
+    "cycle": "Billing cycle",
+    "firstPaymentDate": "First payment date",
+    "category": "Category",
+    "color": "Color",
+    "notes": "Notes",
+    "notesPlaceholder": "Optional notes",
+    "reminder": "Payment reminder",
+    "save": "Save",
+    "saving": "Saving…",
+    "errors": {
+      "nameRequired": "Name is required",
+      "priceRequired": "Price is required",
+      "priceInvalid": "Enter a valid price"
+    }
+  },
+  "detail": {
+    "nextPayment": "Next payment",
+    "monthlyEquivalent": "Monthly",
+    "yearlyEquivalent": "Yearly",
+    "totalPaid": "Total paid since start",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteConfirmTitle": "Delete subscription",
+    "deleteConfirmMessage": "This will permanently delete \"{{name}}\".",
+    "deleteConfirm": "Delete"
+  },
+  "stats": {
+    "title": "Stats",
+    "byCategory": "Spending by category",
+    "topSubscriptions": "Most expensive",
+    "activeCount": "{{count}} active subscription",
+    "activeCount_other": "{{count}} active subscriptions",
+    "noData": "Add subscriptions to see stats."
+  },
+  "settings": {
+    "title": "Settings",
+    "mainCurrency": "Main currency",
+    "theme": "Theme",
+    "themeSystem": "System",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "language": "Language",
+    "reminderTime": "Reminder time",
+    "dangerZone": "Danger zone",
+    "deleteAll": "Delete all data",
+    "deleteAllConfirm": "This will permanently delete all your subscriptions.",
+    "deleteAllButton": "Delete everything",
+    "version": "Version"
+  },
+  "notifications": {
+    "title": "Payment due tomorrow",
+    "body": "{{name}} — {{amount}}"
+  }
+}
