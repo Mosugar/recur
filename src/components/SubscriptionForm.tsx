@@ -17,6 +17,7 @@ import * as Haptics from "expo-haptics";
 
 import { useSubscriptionStore } from "@/store/subscriptionStore";
 import { useSettingsStore } from "@/store/settingsStore";
+import { requestNotificationPermission, hasNotificationPermission } from "@/lib/notifications";
 import { decimalToCents, centsToDecimal } from "@/lib/money";
 import { formatIso, parseDate } from "@/lib/dates";
 import { SubscriptionColors } from "@/theme";
@@ -279,7 +280,13 @@ export function SubscriptionForm({ mode, ...rest }: Props | EditProps) {
               <FieldLabel>{t("form.reminder")}</FieldLabel>
               <Switch
                 value={reminderEnabled}
-                onValueChange={setReminderEnabled}
+                onValueChange={async (val) => {
+                  if (val) {
+                    const granted = await hasNotificationPermission();
+                    if (!granted) await requestNotificationPermission();
+                  }
+                  setReminderEnabled(val);
+                }}
                 trackColor={{ false: "#374151", true: "#6366F1" }}
                 thumbColor="#ffffff"
               />
