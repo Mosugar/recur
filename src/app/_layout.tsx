@@ -32,7 +32,9 @@ export default function RootLayout() {
   const loadSettings = useSettingsStore((s) => s.load);
 
   useEffect(() => {
-    Promise.all([loadSubs(), loadSettings()]).finally(() => SplashScreen.hideAsync());
+    Promise.all([loadSubs(), loadSettings()]).finally(() => {
+      SplashScreen.hideAsync();
+    });
   }, [loadSubs, loadSettings]);
 
   return (
