@@ -1,5 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  // 'class' mode: dark styles activate when the 'dark' class is on the root element.
+  // On web we set it ourselves (see src/app/_layout.tsx); on native NativeWind handles it.
+  darkMode: 'class',
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   presets: [require('nativewind/preset')],
   theme: {
