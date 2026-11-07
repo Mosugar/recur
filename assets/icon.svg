@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1A1744"/>
+      <stop offset="100%" stop-color="#09090B"/>
+    </linearGradient>
+    <linearGradient id="arc" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818CF8"/>
+      <stop offset="100%" stop-color="#6366F1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+
+  <!-- Circular arc — 270° clockwise from top (12 o'clock) to left (9 o'clock) -->
+  <!-- Center (512, 460), radius 210, stroke 58 -->
+  <path
+    d="M 512 250 A 210 210 0 1 1 302 460"
+    fill="none"
+    stroke="url(#arc)"
+    stroke-width="58"
+    stroke-linecap="round"
+  />
+
+  <!-- Arrowhead at (302, 460) — clockwise direction at 9 o'clock = pointing downward -->
+  <polygon
+    points="302,516 244,418 360,418"
+    fill="#6366F1"
+  />
+
+  <!-- Wordmark -->
+  <text
+    x="512"
+    y="800"
+    text-anchor="middle"
+    font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif"
+    font-weight="700"
+    font-size="136"
+    letter-spacing="-4"
+    fill="white"
+  >recur</text>
+</svg>
