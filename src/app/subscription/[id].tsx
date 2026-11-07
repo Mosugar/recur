@@ -8,6 +8,7 @@ import { useSubscriptionStore } from "@/store/subscriptionStore";
 import { useSettingsStore } from "@/store/settingsStore";
 import { nextPaymentDate, daysUntil, dueSoonLabel, parseDate, addMonths } from "@/lib/dates";
 import { monthlyEquivalentCents, yearlyEquivalentCents, formatMoney } from "@/lib/money";
+import { SERVICE_PRESETS } from "@/lib/servicePresets";
 
 export default function SubscriptionDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -29,6 +30,7 @@ export default function SubscriptionDetailScreen() {
   }
 
   const { name, price, currency, cycle, firstPaymentDate, color } = sub;
+  const preset = SERVICE_PRESETS.find((p) => p.name.toLowerCase() === name.toLowerCase());
   const nextDate = nextPaymentDate(firstPaymentDate, cycle);
   const days = daysUntil(nextDate);
   const dueLabel = dueSoonLabel(days, t);
@@ -97,9 +99,15 @@ export default function SubscriptionDetailScreen() {
         {/* Hero */}
         <View className="px-4 pt-8 pb-6 items-center">
           <View
-            style={{ backgroundColor: color, width: 64, height: 64, borderRadius: 32 }}
-            className="mb-4"
-          />
+            style={{ backgroundColor: color, width: 72, height: 72, borderRadius: 20 }}
+            className="mb-4 items-center justify-center"
+          >
+            {preset ? (
+              <Text style={{ fontSize: 32 }}>{preset.emoji}</Text>
+            ) : (
+              <Text className="text-white font-bold text-2xl">{name.charAt(0).toUpperCase()}</Text>
+            )}
+          </View>
           <Text className="text-white text-2xl font-bold">{name}</Text>
           <Text className="text-neutral-400 text-sm mt-1">
             {formatMoney(price, currency, locale)} · {t(`cycles.${cycle}`)}

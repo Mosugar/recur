@@ -43,6 +43,7 @@
     "other": "Autre"
   },
   "form": {
+    "quickPick": "Sélection rapide",
     "newTitle": "Nouvel abonnement",
     "editTitle": "Modifier l'abonnement",
     "name": "Nom",

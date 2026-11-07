@@ -21,6 +21,8 @@ import { requestNotificationPermission, hasNotificationPermission } from "@/lib/
 import { decimalToCents, centsToDecimal } from "@/lib/money";
 import { formatIso, parseDate } from "@/lib/dates";
 import { SubscriptionColors } from "@/theme";
+import { ServicePicker } from "./ServicePicker";
+import type { ServicePreset } from "@/lib/servicePresets";
 import type { Subscription, BillingCycle, Currency, Category } from "@/db/schema";
 
 const CYCLES: BillingCycle[] = ["weekly", "monthly", "quarterly", "yearly"];
@@ -123,6 +125,13 @@ export function SubscriptionForm({ mode, ...rest }: Props | EditProps) {
 
   const isValid = name.trim().length > 0 && !isNaN(decimalToCents(priceStr));
 
+  function handlePresetSelect(preset: ServicePreset) {
+    setName(preset.name);
+    setCategory(preset.category);
+    setColor(preset.color);
+    Haptics.selectionAsync();
+  }
+
   return (
     <SafeAreaView className="flex-1 bg-neutral-950">
       <KeyboardAvoidingView
@@ -153,6 +162,9 @@ export function SubscriptionForm({ mode, ...rest }: Props | EditProps) {
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={{ paddingBottom: 40 }}
         >
+          {/* Service quick-pick — new subscriptions only */}
+          {mode === "new" && <ServicePicker onSelect={handlePresetSelect} />}
+
           {/* Name */}
           <FormSection>
             <FieldLabel>{t("form.name")}</FieldLabel>

@@ -43,6 +43,7 @@
     "other": "Other"
   },
   "form": {
+    "quickPick": "Quick pick",
     "newTitle": "New subscription",
     "editTitle": "Edit subscription",
     "name": "Name",

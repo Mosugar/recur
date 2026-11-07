@@ -70,8 +70,8 @@ export default function HomeScreen() {
 
   if (subscriptions.length === 0) {
     return (
-      <SafeAreaView className="flex-1 bg-neutral-950">
-        <Header
+      <SafeAreaView className="flex-1 bg-neutral-950 dark:bg-neutral-950">
+        <HomeHeader
           monthly={formatMoney(0, mainCurrency, locale)}
           yearly={formatMoney(0, mainCurrency, locale)}
           t={t}
@@ -88,21 +88,21 @@ export default function HomeScreen() {
         keyExtractor={(item) => item.id}
         ListHeaderComponent={
           <View>
-            <Header
+            <HomeHeader
               monthly={formatMoney(totalMonthlyCents, mainCurrency, locale)}
               yearly={formatMoney(totalYearlyCents, mainCurrency, locale)}
               t={t}
             />
             {hasOtherCurrencies && (
-              <Text className="text-neutral-500 text-xs px-4 pb-2">
+              <Text className="text-neutral-500 text-xs px-4 pb-3 -mt-1">
                 {t("home.otherCurrenciesNote")}
               </Text>
             )}
           </View>
         }
         renderSectionHeader={({ section }) => (
-          <View className="px-4 pt-5 pb-2 bg-neutral-950">
-            <Text className="text-neutral-400 text-xs font-semibold uppercase tracking-widest">
+          <View className="px-4 pt-6 pb-2 bg-neutral-950">
+            <Text className="text-neutral-500 text-xs font-semibold uppercase tracking-widest">
               {section.title}
             </Text>
           </View>
@@ -114,25 +114,32 @@ export default function HomeScreen() {
             onLongPress={() => confirmDelete(item)}
           />
         )}
-        ItemSeparatorComponent={() => <View className="h-px bg-neutral-800 ml-14 mr-4" />}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        ItemSeparatorComponent={() => <View className="h-px bg-neutral-800/60 ml-20 mr-4" />}
+        contentContainerStyle={{ paddingBottom: 120 }}
         stickySectionHeadersEnabled={false}
       />
 
       {/* FAB */}
       <Pressable
         onPress={() => router.push("/subscription/new")}
-        className="absolute bottom-6 right-6 w-14 h-14 rounded-pill bg-accent items-center justify-center shadow-lg active:opacity-80"
+        className="absolute bottom-8 right-5 w-14 h-14 rounded-pill bg-accent items-center justify-center active:opacity-80"
+        style={{
+          shadowColor: "#6366F1",
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 0.5,
+          shadowRadius: 12,
+          elevation: 8,
+        }}
         accessibilityLabel={t("home.addButton")}
         accessibilityRole="button"
       >
-        <Text className="text-white text-3xl font-light leading-none">+</Text>
+        <Text className="text-white text-3xl font-light leading-none mt-0.5">+</Text>
       </Pressable>
     </SafeAreaView>
   );
 }
 
-function Header({
+function HomeHeader({
   monthly,
   yearly,
   t,
@@ -142,14 +149,20 @@ function Header({
   t: (k: string) => string;
 }) {
   return (
-    <View className="px-4 pt-6 pb-4">
-      <Text className="text-neutral-400 text-xs font-semibold uppercase tracking-widest mb-1">
-        {t("home.allTitle")}
+    <View className="px-4 pt-8 pb-6">
+      <Text className="text-neutral-500 text-xs font-semibold uppercase tracking-widest mb-2">
+        Total per month
       </Text>
-      <Text className="text-white text-5xl font-bold tracking-tight">{monthly}</Text>
-      <Text className="text-neutral-400 text-sm mt-1">
-        {t("home.perMonth")} · {yearly} {t("home.perYear")}
+      <Text
+        className="text-white font-bold tracking-tight"
+        style={{ fontSize: 48, lineHeight: 54 }}
+      >
+        {monthly}
       </Text>
+      <View className="flex-row items-center mt-2 gap-1">
+        <Text className="text-neutral-500 text-sm">{yearly}</Text>
+        <Text className="text-neutral-600 text-sm">{t("home.perYear")}</Text>
+      </View>
     </View>
   );
 }
