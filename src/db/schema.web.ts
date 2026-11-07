@@ -17,6 +17,7 @@ export interface Subscription {
   color: string;
   notes: string;
   reminderEnabled: boolean;
+  active: boolean;
   createdAt: string;
 }
 

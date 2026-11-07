@@ -13,6 +13,7 @@ interface Row {
   color: string;
   notes: string;
   reminder_enabled: number;
+  active: number;
   created_at: string;
 }
 
@@ -28,6 +29,7 @@ function rowToSubscription(row: Row): Subscription {
     color: row.color,
     notes: row.notes,
     reminderEnabled: row.reminder_enabled === 1,
+    active: row.active === 1,
     createdAt: row.created_at,
   };
 }
@@ -51,8 +53,8 @@ export async function insertSubscription(sub: Subscription): Promise<void> {
   await db.runAsync(
     `INSERT INTO subscriptions
        (id, name, price, currency, cycle, first_payment_date,
-        category, color, notes, reminder_enabled, created_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+        category, color, notes, reminder_enabled, active, created_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
     [
       sub.id,
       sub.name,
@@ -64,6 +66,7 @@ export async function insertSubscription(sub: Subscription): Promise<void> {
       sub.color,
       sub.notes,
       sub.reminderEnabled ? 1 : 0,
+      sub.active ? 1 : 0,
       sub.createdAt,
     ],
   );
@@ -75,7 +78,7 @@ export async function updateSubscription(sub: Subscription): Promise<void> {
     `UPDATE subscriptions SET
        name = ?, price = ?, currency = ?, cycle = ?,
        first_payment_date = ?, category = ?, color = ?,
-       notes = ?, reminder_enabled = ?
+       notes = ?, reminder_enabled = ?, active = ?
      WHERE id = ?;`,
     [
       sub.name,
@@ -87,6 +90,7 @@ export async function updateSubscription(sub: Subscription): Promise<void> {
       sub.color,
       sub.notes,
       sub.reminderEnabled ? 1 : 0,
+      sub.active ? 1 : 0,
       sub.id,
     ],
   );
