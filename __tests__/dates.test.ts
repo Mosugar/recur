@@ -1,4 +1,11 @@
-import { addMonths, nextPaymentDate, daysUntil, formatIso, parseDate } from "../src/lib/dates";
+import {
+  addMonths,
+  nextPaymentDate,
+  daysUntil,
+  dueSoonLabel,
+  formatIso,
+  parseDate,
+} from "../src/lib/dates";
 
 // Helper to build Date at local midnight
 const d = (iso: string) => parseDate(iso);
@@ -78,5 +85,29 @@ describe("daysUntil", () => {
   it("returns negative for past dates", () => {
     const today = d("2024-05-01");
     expect(daysUntil(d("2024-04-24"), today)).toBe(-7);
+  });
+});
+
+describe("dueSoonLabel", () => {
+  // Echoes the key and its options so each branch is visible in the result
+  const t = (key: string, options?: Record<string, unknown>) =>
+    options ? `${key}:${JSON.stringify(options)}` : key;
+
+  it("says today for 0 days", () => {
+    expect(dueSoonLabel(0, t)).toBe("due.today");
+  });
+
+  it("says tomorrow for 1 day", () => {
+    expect(dueSoonLabel(1, t)).toBe("due.tomorrow");
+  });
+
+  it("passes the count for 2 to 7 days", () => {
+    expect(dueSoonLabel(2, t)).toBe('due.inDays:{"count":2}');
+    expect(dueSoonLabel(7, t)).toBe('due.inDays:{"count":7}');
+  });
+
+  it("returns null outside the 7-day window", () => {
+    expect(dueSoonLabel(8, t)).toBeNull();
+    expect(dueSoonLabel(-1, t)).toBeNull();
   });
 });
