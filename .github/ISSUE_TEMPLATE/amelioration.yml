@@ -1,0 +1,24 @@
+name: Amélioration
+description: Proposer une nouvelle fonctionnalité ou une amélioration
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problème
+      description: Ce qui manque ou pourrait être mieux, et pourquoi c'est utile.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposition
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Critères d'acceptation
+      placeholder: |
+        - [ ] …
+        - [ ] Textes traduits en FR et en EN
