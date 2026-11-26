@@ -100,10 +100,16 @@ The same three checks run in GitHub Actions on every pull request.
 
 ### Build an Android APK
 
+> Builds run on [EAS](https://expo.dev/eas) and need an Expo account: they are started by the project owner, not by CI.
+
 ```bash
 npm install -g eas-cli
-eas build -p android --profile preview
+eas login                                # sign in with your Expo account
+eas init                                 # first time only: links the project to that account
+eas build -p android --profile preview   # installable .apk
 ```
+
+The profiles live in [`eas.json`](eas.json): `preview` builds an `.apk` for direct install, `production` builds the Play Store bundle (`.aab`) and bumps the version code automatically. On the first build, EAS asks for the Android package name (for example `com.mosugar.recur`) and saves it in `app.json`.
 
 ## 📥 Download
 
