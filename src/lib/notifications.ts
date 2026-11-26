@@ -36,7 +36,8 @@ export async function rescheduleAll(
   if (!(await hasNotificationPermission())) return;
   await Notifications.cancelAllScheduledNotificationsAsync();
 
-  const enabled = subscriptions.filter((s) => s.reminderEnabled);
+  // Paused subscriptions keep their reminder setting but must not notify until resumed
+  const enabled = subscriptions.filter((s) => s.active && s.reminderEnabled);
   for (const sub of enabled) {
     await scheduleForSubscription(sub, reminderHour, reminderMinute, locale);
   }

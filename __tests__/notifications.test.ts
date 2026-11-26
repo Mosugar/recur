@@ -93,6 +93,18 @@ describe("rescheduleAll", () => {
     expect(mocked.scheduleNotificationAsync.mock.calls[0][0].identifier).toBe("sub-netflix");
   });
 
+  it("skips paused subscriptions and schedules them again once resumed", async () => {
+    const paused = sub({ id: "spotify", name: "Spotify", active: false });
+
+    await rescheduleAll([sub(), paused], 9, 0, "fr-FR");
+    expect(mocked.scheduleNotificationAsync).toHaveBeenCalledTimes(1);
+    expect(mocked.scheduleNotificationAsync.mock.calls[0][0].identifier).toBe("sub-netflix");
+
+    mocked.scheduleNotificationAsync.mockClear();
+    await rescheduleAll([sub(), { ...paused, active: true }], 9, 0, "fr-FR");
+    expect(mocked.scheduleNotificationAsync).toHaveBeenCalledTimes(2);
+  });
+
   it("does not schedule a reminder whose time has already passed", async () => {
     // Payment tomorrow (11 March) → reminder today at 09:00, but it is already 12:00
     await rescheduleAll([sub({ firstPaymentDate: "2026-02-11" })], 9, 0, "fr-FR");
