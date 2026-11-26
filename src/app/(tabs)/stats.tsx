@@ -10,13 +10,13 @@ import type { Category } from "@/db/schema";
 
 const CATEGORY_COLORS: Record<Category, string> = {
   streaming: "#6366F1", // indigo
-  music: "#F97316",    // orange
+  music: "#F97316", // orange
   software: "#EC4899", // pink
-  gaming: "#EF4444",   // red
-  fitness: "#10B981",  // emerald
-  cloud: "#06B6D4",    // cyan
-  news: "#F59E0B",     // amber
-  other: "#9CA3AF",    // neutral
+  gaming: "#EF4444", // red
+  fitness: "#10B981", // emerald
+  cloud: "#06B6D4", // cyan
+  news: "#F59E0B", // amber
+  other: "#9CA3AF", // neutral
 };
 
 export default function StatsScreen() {
