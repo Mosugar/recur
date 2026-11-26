@@ -111,10 +111,6 @@ eas build -p android --profile preview   # installable .apk
 
 The profiles live in [`eas.json`](eas.json): `preview` builds an `.apk` for direct install, `production` builds the Play Store bundle (`.aab`) and bumps the version code automatically. On the first build, EAS asks for the Android package name (for example `com.mosugar.recur`) and saves it in `app.json`.
 
-## 📥 Download
-
-Android: grab the latest `.apk` from the [Releases](../../releases) page.
-
 ## 🗺 Roadmap
 
 - [ ] Home screen widgets
