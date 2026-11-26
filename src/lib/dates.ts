@@ -36,7 +36,8 @@ export function nextPaymentDate(
   return current;
 }
 
-function advanceOneCycle(date: Date, cycle: BillingCycle): Date {
+/** Date of the payment one billing cycle after `date` (local midnight preserved). */
+export function advanceOneCycle(date: Date, cycle: BillingCycle): Date {
   switch (cycle) {
     case "weekly":
       // Calendar days, not 7 × 24 h: a week is 167 h or 169 h when the clocks change
