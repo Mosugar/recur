@@ -111,3 +111,29 @@ describe("dueSoonLabel", () => {
     expect(dueSoonLabel(-1, t)).toBeNull();
   });
 });
+
+// Tests run in Europe/Paris (jest.global-setup.js): clocks go back on 25 Oct 2026
+// and forward on 29 Mar 2026, so a week is 169 h or 167 h long around those dates.
+describe("weekly cycle across daylight saving time changes", () => {
+  it("runs in a time zone that has DST", () => {
+    expect(d("2026-10-20").getTimezoneOffset()).not.toBe(d("2026-10-27").getTimezoneOffset());
+  });
+
+  it("keeps the same weekday after clocks go back", () => {
+    const next = nextPaymentDate("2026-10-20", "weekly", d("2026-10-21"));
+    expect(formatIso(next)).toBe("2026-10-27");
+    expect(next.getHours()).toBe(0);
+  });
+
+  it("keeps the same weekday after clocks go forward", () => {
+    const next = nextPaymentDate("2026-03-24", "weekly", d("2026-03-25"));
+    expect(formatIso(next)).toBe("2026-03-31");
+  });
+
+  it("does not drift over many weeks", () => {
+    // 20 Oct 2026 + 10 weeks = 29 Dec 2026, still a Tuesday
+    const next = nextPaymentDate("2026-10-20", "weekly", d("2026-12-23"));
+    expect(formatIso(next)).toBe("2026-12-29");
+    expect(next.getDay()).toBe(2);
+  });
+});

@@ -6,7 +6,7 @@ import * as Haptics from "expo-haptics";
 
 import { useSubscriptionStore } from "@/store/subscriptionStore";
 import { useSettingsStore } from "@/store/settingsStore";
-import { nextPaymentDate, daysUntil, dueSoonLabel, parseDate, addMonths } from "@/lib/dates";
+import { nextPaymentDate, daysUntil, dueSoonLabel, parseDate, advanceOneCycle } from "@/lib/dates";
 import { monthlyEquivalentCents, yearlyEquivalentCents, formatMoney } from "@/lib/money";
 import { SERVICE_PRESETS } from "@/lib/servicePresets";
 import { ServiceLogo } from "@/components/ServiceLogo";
@@ -46,20 +46,7 @@ export default function SubscriptionDetailScreen() {
   let cursor = new Date(start);
   while (cursor <= now) {
     totalPaidCents += price;
-    switch (cycle) {
-      case "weekly":
-        cursor = new Date(cursor.getTime() + 7 * 24 * 60 * 60 * 1000);
-        break;
-      case "monthly":
-        cursor = addMonths(cursor, 1);
-        break;
-      case "quarterly":
-        cursor = addMonths(cursor, 3);
-        break;
-      case "yearly":
-        cursor = addMonths(cursor, 12);
-        break;
-    }
+    cursor = advanceOneCycle(cursor, cycle);
   }
 
   async function togglePause() {
