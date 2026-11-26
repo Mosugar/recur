@@ -7,6 +7,7 @@
 **A minimalist subscription tracker for iOS & Android.**
 Know what you pay, when you pay it, and never get surprised by a renewal again.
 
+[![CI](https://img.shields.io/github/actions/workflow/status/Mosugar/recur/ci.yml?branch=main&style=for-the-badge&label=CI)](https://github.com/Mosugar/recur/actions/workflows/ci.yml)
 ![Expo](https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white)
 ![React Native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
@@ -90,8 +91,12 @@ Then scan the QR code with **Expo Go** (Android) or the **Camera app** (iOS).
 ### Run the tests
 
 ```bash
-npm test
+npm test            # Jest
+npm run lint        # ESLint + Prettier
+npm run typecheck   # TypeScript
 ```
+
+The same three checks run in GitHub Actions on every pull request.
 
 ### Build an Android APK
 
