@@ -128,7 +128,7 @@ Brand logos are trademarks of their respective owners and are used only to ident
 
 - Portfolio: [mohamedsekkar.com](https://mohamedsekkar.com)
 - LinkedIn: [linkedin.com/in/mohamedsekkar](https://linkedin.com/in/mohamedsekkar)
-- Email: sekkarmohamedd@gmail.com
+- Email: mohamedsekkar1110@gmail.com
 
 ---
 
